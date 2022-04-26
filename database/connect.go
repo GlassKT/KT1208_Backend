@@ -5,6 +5,7 @@ import (
 	//"github.com/go-sql-driver/mysql"
 
 	"database/sql"
+	"log"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -31,4 +32,5 @@ func Connect() {
 
 	// 연결된 db를 리턴
 	DB = db
+	log.Printf("[DB 연결 성공]")
 }
