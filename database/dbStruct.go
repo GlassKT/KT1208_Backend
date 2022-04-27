@@ -9,5 +9,5 @@ type User struct {
 	PW        string    `gorm:"column:pw" json:"pw"`
 	NAME      string    `gorm:"column:name" json:"name"`
 	EMAIL     string    `gprm:"column:email" json:"email"`
-	CREATE_AT time.Time `gorm:"column:createAt`
+	CREATE_AT time.Time `gorm:"column:createAt;autoCreateTime" json:"createAt"`
 }

@@ -2,6 +2,7 @@ package main
 
 import (
 	"GlassKT/database"
+	"GlassKT/handler"
 
 	"github.com/gin-gonic/gin"
 )
@@ -9,9 +10,10 @@ import (
 func main() {
 
 	database.Connect()
-
 	g := gin.Default()
 
-	g.Run()
+	g.POST("/signup", handler.SignUp)
+	g.POST("/login", handler.Login)
 
+	g.Run()
 }
