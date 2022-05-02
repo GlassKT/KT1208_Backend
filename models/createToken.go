@@ -1,4 +1,4 @@
-package method
+package models
 
 import (
 	"log"

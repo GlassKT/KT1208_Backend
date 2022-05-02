@@ -1,8 +1,8 @@
-package handler
+package controllers
 
 import (
 	db "GlassKT/database"
-	"GlassKT/method"
+	"GlassKT/models"
 
 	"github.com/gin-gonic/gin"
 )
@@ -32,7 +32,7 @@ func Login(g *gin.Context) {
 		return
 	}
 
-	token, err := method.CreateToken(param.ID)
+	token, err := models.CreateToken(param.ID)
 	if err != nil {
 		g.JSON(400, gin.H{"status": "400", "message": "토큰 생성중 오류"})
 		return

@@ -1,4 +1,4 @@
-package method
+package models
 
 /*func sendMessage(g gin.Context){
 		// 메일서버 로그인 정보 설정

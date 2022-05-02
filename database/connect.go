@@ -16,7 +16,7 @@ var DB *gorm.DB
 func Connect() {
 
 	// db정보와 db_dns
-	sqlDB, err := sql.Open("mysql", "glassKT:1234@tcp(127.0.0.1:3306)/glasskt")
+	sqlDB, err := sql.Open("mysql", "glassKT:1234@tcp(13.125.236.0:3306)/glasskt")
 	if err != nil {
 		panic(err)
 	}

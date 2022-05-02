@@ -1,9 +1,9 @@
-package handler
+package controllers
 
 import (
 	"GlassKT/database"
 	db "GlassKT/database"
-	"GlassKT/method"
+	"GlassKT/models"
 	_ "database/sql"
 	"log"
 
@@ -34,7 +34,7 @@ func SignUp(g *gin.Context) {
 		return
 	}
 
-	err = method.MakeUser(user.ID, user.PW, user.NAME, user.EMAIL)
+	err = models.MakeUser(user.ID, user.PW, user.NAME, user.EMAIL)
 	if err != nil {
 		g.JSON(400, gin.H{"status": "400", "message": "유저 생성중 오류"})
 		return
