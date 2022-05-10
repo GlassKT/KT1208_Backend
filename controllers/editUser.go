@@ -26,7 +26,7 @@ func EditUser(g *gin.Context) {
 		return
 	}
 
-	if err := db.DB.Model(&User).Updates(newUser).Error; err != nil {
+	if err := db.DB.Model(&User).Omit("createAt").Updates(newUser).Error; err != nil {
 		g.JSON(400, gin.H{"status": "400", "message": "업데이트 실패"})
 		return
 	}
