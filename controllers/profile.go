@@ -9,7 +9,10 @@ import (
 func Profile(g *gin.Context) {
 
 	User := db.User{}
+	//profile := proFile{}
+
 	err := g.Bind(&User)
+
 	if err != nil {
 		g.JSON(400, gin.H{
 			"status":  "400",
@@ -26,13 +29,12 @@ func Profile(g *gin.Context) {
 		return
 	}
 
-	db.DB.First(&User, "id = ?", User.ID)
+	db.DB.Omit("pw", "createAt", "").First(&User, "id = ?", User.ID)
 
-	/*if User == nil{
-		g.JSON(400,gin.H{
-			"status":
-		})
-	}*/
+	g.JSON(200, gin.H{
+		"status": "200",
+		"data":   User,
+	})
 
 	return
 }

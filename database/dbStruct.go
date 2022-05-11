@@ -8,10 +8,10 @@ import (
 
 type User struct {
 	ID        string    `gorm:"primary_key; column:id" json:"id" form:"id"`
-	PW        string    `gorm:"column:pw" json:"pw" form:"pw"`
+	PW        string    `gorm:"column:pw" json:"pw,omitempty" form:"pw"` //,omitempty = null값이면 그냥 없다치고 업로드
 	NAME      string    `gorm:"column:name" json:"name" form:"name"`
 	EMAIL     string    `gprm:"column:email" json:"email" form:"email"`
-	CREATE_AT time.Time `gorm:"column:createAt;autoCreateTime" json:"createAt"`
+	CREATE_AT time.Time `gorm:"column:createAt;autoCreateTime" json:"createAt,omitempty"`
 
 	BIRTH     time.Time    `gorm:"column:birth; sql:DEFAULT:0000-00-00" json:"birth" form:"birth"`
 	MBTI      string       `gorm:"column:mbti" json:"mbti" form:"mbti"`
