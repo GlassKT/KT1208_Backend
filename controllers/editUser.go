@@ -17,7 +17,7 @@ func EditUser(g *gin.Context) {
 	User := &db.User{}
 
 	if newUser.ID == "" || newUser.PW == "" || newUser.NAME == "" {
-		g.JSON(400, gin.H{"status": "400", "message": "ID,PW 모두 입력하세요"})
+		g.JSON(400, gin.H{"status": "400", "message": "ID,PW,NAME 모두 입력하세요"})
 		return
 	}
 

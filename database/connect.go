@@ -16,12 +16,12 @@ var DB *gorm.DB
 func Connect() {
 
 	// db정보와 db_dns
-	sqlDB, err := sql.Open("mysql", "glassKT:1234@tcp(13.125.236.0:3306)/glasskt")
+	sqlDB, err := sql.Open("mysql", "glassKT:1234@tcp(13.125.236.0:3306)/glasskt?parseTime=true")
 	if err != nil {
 		panic(err)
 	}
 
-	// 기존 db와 연결
+	// 기존 db와 연결(gorm)
 	db, err := gorm.Open(mysql.New(mysql.Config{
 		Conn: sqlDB,
 	}), &gorm.Config{})
