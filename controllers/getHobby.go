@@ -2,37 +2,24 @@ package controllers
 
 import (
 	db "GlassKT/database"
-	"fmt"
-	"log"
 
 	"github.com/gin-gonic/gin"
 )
 
 func GetHobby(g *gin.Context) {
 
-	Hobby := &db.Hobby{}
-	//hobby := db.DB.Find(Hobby)
+	Hobby := []db.Hobby{} // db.hobby{}의 형태로 가져온 값들의 집합을 리스트에 저장
 
-	/*if Hobby == nil {
-		g.JSON(400, gin.H{
-			"status":  400,
-			"message": "바인딩 중 오류",
+	if err := db.DB.Find(&Hobby).Error; err != nil {
+		g.JSON(200, gin.H{
+			"status": 200,
+			"data":   "값을 가져오지 못함",
 		})
 		return
 	}
-	fmt.Println(hobby.RowsAffected)
 	g.JSON(200, gin.H{
-		"status":  400,
-		"message": "취미목록",
-		//"data":    hobby,
-	})*/
-
-	first := db.DB.First(Hobby)
-	fmt.Println("firstValue", first.RowsAffected)
-	many := db.DB.Find(Hobby)
-	fmt.Println("many : ", many.RowsAffected)
-	if err := db.DB.First(Hobby).Error; err != nil {
-		log.Panic(err)
-	}
+		"status": 200,
+		"data":   Hobby,
+	})
 	return
 }

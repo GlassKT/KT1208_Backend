@@ -22,6 +22,9 @@ type User struct {
 	INTRODUCE string       `gorm:"column:introduce" json:"introduce" form:"introduce"`
 	IMGNAME   string       `gorm:"column:imgname" json:"imgname" form:"imgname"`
 	FRIENDS   []Makefriend `gorm:"foreignKey:USERID;association_foreignkey:ID"`
+
+	HobbyId int   `gorm:"column:hobbyId" json:"hobbyId" form:"hobbyId"`
+	Hobby   Hobby `gorm:"foreignKey:HobbyId"`
 }
 
 type Makefriend struct {
@@ -30,6 +33,6 @@ type Makefriend struct {
 }
 
 type Hobby struct {
-	CODE int    `gorm:"column:code" json:"code" form:"code"`
+	CODE int    `gorm:"primary_key; column:code" json:"code" form:"code"`
 	NAME string `gorm:"column:name" json:"name" form:"name"`
 }
