@@ -22,7 +22,9 @@ func main() {
 	g.POST("/upload", controllers.UploadIMG)    // 이미지 업로드 페이지
 	g.POST("/friend", controllers.MakeFriend)   // 친구추가하는 페이진데 후에 models로 좌천될 예정
 	g.POST("/edit", controllers.EditUser)       // 프로필 편집 페이지
-	g.POST("/plofile", controllers.Profile)     // 프로필 보여주는 페이지
+	g.POST("/profile", controllers.Profile)     // 프로필 보여주는 페이지
+
+	g.GET("/hobby", controllers.GetHobby) // 취미목록을 보내주는 페이지
 
 	g.Run() // :8080
 }

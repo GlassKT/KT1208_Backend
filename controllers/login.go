@@ -16,7 +16,7 @@ func Login(g *gin.Context) {
 	param := new(loginstruct)
 	err := g.Bind(param) // g의 값을 user에 파싱
 	if err != nil {
-		g.JSON(400, gin.H{"status": "400", "message": "파싱중 오류"})
+		g.JSON(400, gin.H{"status": "400", "message": "바인딩 중 오류"})
 		return
 	}
 

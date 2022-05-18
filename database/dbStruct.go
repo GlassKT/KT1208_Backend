@@ -14,7 +14,8 @@ type User struct {
 	//CREATE_AT time.Time `gorm:"column:createAt;autoCreateTime" json:"createAt,omitempty"`
 	CREATE_AT time.Time `gorm:"column:createAt" json:"createAt,omitempty"`
 
-	BIRTH     time.Time    `gorm:"column:birth; sql:DEFAULT:0000-00-00" json:"birth" form:"birth"`
+	//BIRTH     time.Time    `gorm:"column:birth" json:"birth" form:"birth"`
+	BIRTH     time.Time    `gorm:"column:birth" json:"birth" form:"birth" time_format:"RFC3339"`
 	MBTI      string       `gorm:"column:mbti" json:"mbti" form:"mbti"`
 	AREA      string       `gorm:"column:area" json:"area" form:"area"`
 	SCHOOL    string       `gorm:"column:school" json:"school" form:"school"`
@@ -26,4 +27,9 @@ type User struct {
 type Makefriend struct {
 	USERID   string `gorm:"column:user_id" json:"user_id" form:"user_id"`
 	FRIENDID string `gorm:"column:friend_id" json:"friend_id" form:"friend_id"`
+}
+
+type Hobby struct {
+	CODE int    `gorm:"column:code" json:"code" form:"code"`
+	NAME string `gorm:"column:name" json:"name" form:"name"`
 }
