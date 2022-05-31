@@ -9,6 +9,7 @@ import (
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 var DB *gorm.DB
@@ -24,13 +25,15 @@ func Connect() {
 	// 기존 db와 연결(gorm)
 	db, err := gorm.Open(mysql.New(mysql.Config{
 		Conn: sqlDB,
-	}), &gorm.Config{})
+	}), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Info),
+	})
 
 	if err != nil {
 		panic(err)
 	}
 
-	// 연결된 db를 리턴
+	// 연결된 db를 리
 	DB = db
 	log.Printf("[DB 연결 성공]")
 }

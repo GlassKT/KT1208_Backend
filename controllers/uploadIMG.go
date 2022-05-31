@@ -3,7 +3,11 @@ package controllers
 import (
 	db "GlassKT/database"
 	"GlassKT/models"
+	"bytes"
+	"encoding/json"
 	"io"
+	"io/ioutil"
+	"net/http"
 	"os"
 
 	"github.com/gin-gonic/gin"
@@ -30,7 +34,7 @@ func UploadIMG(g *gin.Context) {
 		return
 	}
 
-	if err = db.DB.Where("id = ?", imgId).Find(User).Error; err == nil {
+	if err = db.DB.Where("id = ?", imgId).Find(User).Error; err != nil {
 		g.JSON(400, gin.H{
 			"status":  "400",
 			"message": "존재하지 않는 id",
@@ -51,14 +55,6 @@ func UploadIMG(g *gin.Context) {
 
 	imgIdOnly := imgId + ext // 파일명(유저 id) + 확장자명
 
-	if err = db.DB.Model(&User).Where("id = ?", imgId).Update("imgname", imgIdOnly).Error; err != nil {
-		g.JSON(400, gin.H{
-			"status":  "400",
-			"message": "이미지 업로드 실패",
-		})
-		return
-	}
-
 	out, err := os.Create("./img/" + imgIdOnly)
 	if err != nil {
 		g.JSON(400, gin.H{
@@ -68,6 +64,54 @@ func UploadIMG(g *gin.Context) {
 		return
 	}
 
+	if err = db.DB.Model(&User).Where("id = ?", imgId).Update("imgname", imgIdOnly).Error; err != nil {
+		g.JSON(400, gin.H{
+			"status":  "400",
+			"message": "이미지 업로드 실패",
+		})
+		return
+	}
+
+	picture := map[string]string{
+		"image": "http://10.80.162.98:8080/img/" + imgIdOnly,
+	}
+
+	imgJson, err := json.Marshal(picture)
+	if err != nil {
+		g.JSON(400, gin.H{
+			"status":  400,
+			"messege": "map to json error",
+		})
+		return
+	}
+
+	buff := bytes.NewBuffer(imgJson)
+
+	resp, err := http.Post("http://10.80.161.174:5000/image", "application/json", buff)
+	if err != nil {
+		g.JSON(400, gin.H{
+			"status":  400,
+			"messege": "Post to other server error",
+		})
+		return
+	}
+
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		g.JSON(400, gin.H{
+			"status":  400,
+			"messege": "Server to Server Post error",
+		})
+		return
+	}
+
+	respResult := string(respBody)
+	g.JSON(400, gin.H{
+		"status":  400,
+		"messege": respResult,
+	})
+
+	defer resp.Body.Close()
 	defer out.Close()
 
 	_, err = io.Copy(out, file)

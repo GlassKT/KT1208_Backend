@@ -12,7 +12,6 @@ func Profile(g *gin.Context) {
 	//profile := proFile{}
 
 	err := g.Bind(&User)
-
 	if err != nil {
 		g.JSON(400, gin.H{
 			"status":  "400",

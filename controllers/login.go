@@ -27,7 +27,7 @@ func Login(g *gin.Context) {
 		return
 	}
 
-	if err := db.DB.Where("id = ? AND pw = ?", param.ID, param.PW).Find(User).Error; err == nil {
+	if err := db.DB.Where("id = ? AND pw = ?", param.ID, param.PW).Find(User).Error; err != nil {
 		g.JSON(400, gin.H{"status": "400", "message": "ID가 존재하지 않거나 PW가 잘못되었습니다"})
 		return
 	}
