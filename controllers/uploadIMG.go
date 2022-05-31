@@ -64,17 +64,20 @@ func UploadIMG(g *gin.Context) {
 		return
 	}
 
-	if err = db.DB.Model(&User).Where("id = ?", imgId).Update("imgname", imgIdOnly).Error; err != nil {
+	_, err = io.Copy(out, file)
+	if err != nil {
 		g.JSON(400, gin.H{
 			"status":  "400",
-			"message": "이미지 업로드 실패",
+			"message": "이미지 업로드",
 		})
 		return
 	}
 
 	picture := map[string]string{
-		"image": "http://10.80.162.98:8080/img/" + imgIdOnly,
+		// "image": "http://10.80.162.125:8080/img/data.png",
+		"image": "http://10.80.162.125:8080/img/" + imgIdOnly,
 	}
+	// }
 
 	imgJson, err := json.Marshal(picture)
 	if err != nil {
@@ -87,23 +90,25 @@ func UploadIMG(g *gin.Context) {
 
 	buff := bytes.NewBuffer(imgJson)
 
-	resp, err := http.Post("http://10.80.161.174:5000/image", "application/json", buff)
+	resp, err := http.Post("http://10.80.161.150:5000/image", "application/json", buff)
 	if err != nil {
-		g.JSON(400, gin.H{
-			"status":  400,
-			"messege": "Post to other server error",
-		})
-		return
+		panic(err)
 	}
 
 	respBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		g.JSON(400, gin.H{
-			"status":  400,
-			"messege": "Server to Server Post error",
-		})
-		return
+	println(respBody)
+	if err == nil {
+		str := string(respBody)
+		println(str)
 	}
+
+	// if err != nil {
+	// 	g.JSON(400, gin.H{
+	// 		"status":  400,
+	// 		"messege": "Server to Server Post error",
+	// 	})
+	// 	return
+	// }
 
 	respResult := string(respBody)
 	g.JSON(400, gin.H{
@@ -114,11 +119,10 @@ func UploadIMG(g *gin.Context) {
 	defer resp.Body.Close()
 	defer out.Close()
 
-	_, err = io.Copy(out, file)
-	if err != nil {
+	if err = db.DB.Model(&User).Where("id = ?", imgId).Update("imgname", imgIdOnly).Error; err != nil {
 		g.JSON(400, gin.H{
 			"status":  "400",
-			"message": "이미지 업로드",
+			"message": "이미지 업로드 실패",
 		})
 		return
 	}
