@@ -9,6 +9,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -75,7 +76,7 @@ func UploadIMG(g *gin.Context) {
 
 	picture := map[string]string{
 		// "image": "http://10.80.162.125:8080/img/data.png",
-		"image": "http://10.80.162.125:8080/img/" + imgIdOnly,
+		"image": "http://10.80.162.33:8080/img/" + imgIdOnly, //***********
 	}
 	// }
 
@@ -90,31 +91,40 @@ func UploadIMG(g *gin.Context) {
 
 	buff := bytes.NewBuffer(imgJson)
 
-	resp, err := http.Post("http://10.80.161.150:5000/image", "application/json", buff)
+	resp, err := http.Post("http://10.80.161.150:5000/image", "application/json", buff) //***********
 	if err != nil {
-		panic(err)
+		g.JSON(400, gin.H{
+			"status":  400,
+			"messege": "얼굴인식 서버와 연결이 되지 않음",
+		})
+		return
 	}
 
 	respBody, err := ioutil.ReadAll(resp.Body)
-	println(respBody)
-	if err == nil {
-		str := string(respBody)
-		println(str)
+	if err != nil {
+		g.JSON(400, gin.H{
+			"status":  400,
+			"messege": "얼굴인식 판단 결과를 가져오지 못함",
+		})
+		return
 	}
 
-	// if err != nil {
-	// 	g.JSON(400, gin.H{
-	// 		"status":  400,
-	// 		"messege": "Server to Server Post error",
-	// 	})
-	// 	return
-	// }
-
 	respResult := string(respBody)
-	g.JSON(400, gin.H{
-		"status":  400,
-		"messege": respResult,
-	})
+
+	if strings.Contains(respResult, "false") {
+		g.JSON(400, gin.H{
+			"status":  400,
+			"messege": "사람의 얼굴이 없습니다. 얼굴사진을 올려주세요",
+		})
+		return
+	}
+	if strings.Contains(respResult, "error") {
+		g.JSON(400, gin.H{
+			"status":  400,
+			"messege": "얼굴인식 서버에서 문제가 발생했습니다",
+		})
+		return
+	}
 
 	defer resp.Body.Close()
 	defer out.Close()
