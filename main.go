@@ -24,6 +24,8 @@ func main() {
 	g.POST("/edit", controllers.EditUser)        // 프로필 편집 페이지
 	g.POST("/profile", controllers.Profile)      // 프로필 보여주는 페이지
 	g.POST("/numfriend", controllers.NumFriends) // 친구수를 보내주는 페이지
+	g.GET("/friendList", controllers.GetFriends) // 친구(서로친구 or 요청받은 친구 목록) 조회(아이디, 상태[wait, follow])
+	g.POST("/unfollow", controllers.Unfollow)    // 친구 삭제
 
 	g.GET("/hobby", controllers.GetHobby) // 취미목록을 보내주는 페이지
 

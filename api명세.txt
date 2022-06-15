@@ -1,5 +1,7 @@
+IP : 10.80.163.6
+
 1. [회원가입]
-10.80.161.25:8080/signup
+IP:8080/signup
 method: POST
 요청 JSON 데이터
 {
@@ -24,7 +26,7 @@ method: POST
 
 
 2. [회원가입 - 이메일 인증번호 발송]
-10.80.161.25:8080/mailsend
+IP:8080/mailsend
 method: POST
 요청 JSON 데이터
 {
@@ -40,7 +42,7 @@ method: POST
 }
 
 3. [로그인]
-10.80.162.41:8080/login
+IP:8080/login
 method: POST
 요청 JSON 데이터
 {
@@ -57,7 +59,7 @@ method: POST
 }
 
 4. [프로필 조회]
-10.80.162.41:8080/profile
+IP:8080/profile
 method: POST
 요청 JSON 데이터
 {
@@ -88,7 +90,7 @@ method: POST
 }
 
 5. [프로필 편집]
-10.80.162.41:8080/edit
+IP:8080/edit
 method: POST
 요청 JSON 데이터
 {
@@ -112,7 +114,7 @@ method: POST
 }
 
 6. [프로필 이미지 업로드]
-10.80.162.41:8080/upload
+IP:8080/upload
 method: POST
 요청 FORM 데이터
 {
@@ -127,7 +129,7 @@ method: POST
 }
 
 7. [취미 리스트 조회]
-10.80.162.41:8080/hobby
+IP:8080/hobby
 method: GET
 응답 JSON 데이터
 {
@@ -194,7 +196,7 @@ method: GET
 
 
 8. [친구 수]
-10.80.162.41:8080/numfriend
+IP:8080/numfriend
 method: POST
 요청 JSON 데이터
 {
@@ -208,9 +210,39 @@ method: POST
 }
 
 
-9. 친구 목록 조회(서로 수락)
-10. 친구 삭제(둘다 삭제)
-11. 친구요청 목록 조회
+9. [친구 목록 / 요청친구 목록 조회]
+IP:8080/friendList?userid=아이디&status=상태
+method: GET
+요청 params
+- userid : 조회할 사용자 아이디
+- status : 친구 상태 ('follow': 서로 친구 or 'wait': 수락대기중)
+
+응답 JSON 데이터
+{
+    "data": [
+        {
+            "id": "jo",
+            "name": "name",
+            "email": "jo",
+            "createAt": "0001-01-01T00:00:00Z",
+            "birth": "0001-01-01T00:00:00Z",
+            "mbti": "",
+            "area": "",
+            "school": "",
+            "introduce": "",
+            "imgname": "jo.jpg",
+            "FRIENDS": null,
+            "hobbyId": 0,
+            "Hobby": {
+                "code": 0,
+                "name": ""
+            }
+        }
+    ],
+    "status": 200
+}
+
+11. 친구 삭제(둘다 삭제)
 12. 친구 수락(수락 시 신청인, 피신청인 둘다 row 생성)
 13. 친구 거절
 14. 내가 요청한 친구 목록 조회
