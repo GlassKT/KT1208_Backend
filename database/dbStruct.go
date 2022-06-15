@@ -30,6 +30,7 @@ type User struct {
 type Makefriend struct {
 	USERID   string `gorm:"column:user_id" json:"user_id" form:"user_id"`
 	FRIENDID string `gorm:"column:friend_id" json:"friend_id" form:"friend_id"`
+	STATUS   string `gorm:"column:status" json:"status" form:"status"`
 }
 
 type Hobby struct {

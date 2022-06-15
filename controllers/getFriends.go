@@ -8,6 +8,7 @@ import (
 
 func GetFriends(g *gin.Context) {
 
+	// 친구 목록 (서로 친구이거나 요청 대기중인 애들만)
 	User := []db.User{}
 
 	userid := g.Query("userid")
