@@ -33,5 +33,9 @@ func DeleteFriends(g *gin.Context) {
 		return
 	}
 
+	g.JSON(200, gin.H{
+		"status":  "200",
+		"message": "친구 삭제 완료",
+	})
 	return
 }

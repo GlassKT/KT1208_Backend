@@ -242,11 +242,110 @@ method: GET
     "status": 200
 }
 
-11. 친구 삭제(둘다 삭제)
-12. 친구 수락(수락 시 신청인, 피신청인 둘다 row 생성)
-13. 친구 거절
+11. [친구 삭제(둘다 삭제), 친구 거절]
+IP:8080/deletefriend?user_id=사용자아이디&friend_id=친구아이디
+method: POST
+요청 params
+- user_id : 사용자 아이디
+- friend_id : 삭제할 사용자 아이디
+
+응답 JSON 데이터
+{
+    "status":  "200",
+    "message": "친구 삭제 완료"
+}
+
+12. [친구 거절]
+- 11번과 동일
+
+13. [친구 추가]
+IP:8080/makefriend?user_id=사용자아이디&friend_id=친구아이디
+method: POST
+요청 params
+- user_id : 사용자 아이디
+- friend_id : 친구 아이디
+
+응답 JSON 데이터
+{
+    "status":  "200",
+    "message": "친구 추가 완료"
+}
+
+13. [친구 수락(수락 시 신청인, 피신청인 둘다 row 생성)]
+IP:8080/acceptfriend?user_id=사용자아이디&friend_id=친구아이디
+method: POST
+요청 params
+- user_id : 사용자 아이디
+- friend_id : 친구 아이디
+
+응답 JSON 데이터
+{
+    "status":  "200",
+    "message": "친구 추가 완료"
+}
+
 14. 내가 요청한 친구 목록 조회
+IP:8080/requestList?userid=아이디
+method: GET
+요청 params
+- userid : 조회할 사용자 아이디
+
+응답 JSON 데이터
+{
+    "data": [
+        {
+            "id": "data",
+            "name": "data",
+            "email": "이메일",
+            "createAt": "0001-01-01T00:00:00Z",
+            "birth": "2012-11-01T00:00:00Z",
+            "mbti": "",
+            "area": "",
+            "school": "",
+            "introduce": "",
+            "imgname": "data.jpg",
+            "FRIENDS": null,
+            "hobbyId": 1,
+            "Hobby": {
+                "code": 0,
+                "name": ""
+            }
+        },
+        {
+            "id": "jo2",
+            "name": "jo",
+            "email": "email",
+            "createAt": "0001-01-01T00:00:00Z",
+            "birth": "0001-01-01T00:00:00Z",
+            "mbti": "",
+            "area": "",
+            "school": "",
+            "introduce": "",
+            "imgname": "",
+            "FRIENDS": null,
+            "hobbyId": 0,
+            "Hobby": {
+                "code": 0,
+                "name": ""
+            }
+        }
+    ],
+    "status": 200
+}
+
 15. 추천친구(취미 기반 필터링 or 친구의 친구...)
-16. 알림 (친구 요청 )
+IP:8080/recommand?userid=아이디
+method: GET
+요청 params
+- userid : 조회할 사용자 아이디
+
+응답 JSON 데이터
+{
+    
+}
+
+16. [알림 (친구 요청)]
+- 내게 요청된 친구 목록과 동일
+
 17. 채팅하기(채팅방 생성 - 채팅 참여자 추가)
 18. 채팅 연결 (웹소켓)
