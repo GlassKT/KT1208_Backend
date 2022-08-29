@@ -7,6 +7,8 @@ import (
 	"database/sql"
 	"log"
 
+	"example.com/m/models"
+
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -32,6 +34,8 @@ func Connect() {
 	if err != nil {
 		panic(err)
 	}
+
+	db.AutoMigrate(&models.User{}, &models.Makefriend{}, &models.Hobby{})
 
 	// 연결된 db를 리
 	DB = db

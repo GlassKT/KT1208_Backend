@@ -1,27 +1,28 @@
 package controllers
 
 import (
-	db "GlassKT/database"
+	db "example.com/m/database"
+	"example.com/m/models"
 
 	"github.com/gin-gonic/gin"
 )
 
-func Profile(g *gin.Context) {
+func Profile(c *gin.Context) {
 
-	User := db.User{}
+	User := models.User{}
 	//profile := proFile{}
 
-	err := g.Bind(&User)
+	err := c.Bind(&User)
 	if err != nil {
-		g.JSON(400, gin.H{
+		c.JSON(400, gin.H{
 			"status":  "400",
 			"message": "바인딩 오류",
 		})
 		return
 	}
 
-	if err := db.DB.Where("id = ?", g.Param("id")).Find(&User).Error; err != nil {
-		g.JSON(400, gin.H{
+	if err := db.DB.Where("id = ?", c.Param("id")).Find(&User).Error; err != nil {
+		c.JSON(400, gin.H{
 			"status":  "400",
 			"message": "존재하지 않는 Id",
 		})
@@ -30,7 +31,7 @@ func Profile(g *gin.Context) {
 
 	db.DB.Omit("pw", "createAt", "").First(&User, "id = ?", User.ID)
 
-	g.JSON(200, gin.H{
+	c.JSON(200, gin.H{
 		"status": "200",
 		"data":   User,
 	})

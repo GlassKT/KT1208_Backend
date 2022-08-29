@@ -1,32 +1,33 @@
 package controllers
 
 import (
-	"GlassKT/database"
-	"GlassKT/models"
 	"math/rand"
 	"strconv"
 	"time"
 
+	"example.com/m/models"
+	"example.com/m/modules"
+
 	"github.com/gin-gonic/gin"
 )
 
-func SendEmaill(g *gin.Context) {
+func SendEmaill(c *gin.Context) {
 
-	email := new(database.User)
-	err := g.Bind(email)
+	email := new(models.User)
+	err := c.Bind(email)
 	if err != nil {
-		g.JSON(400, gin.H{"status": "400", "message": "파싱중 오류"})
+		c.JSON(400, gin.H{"status": "400", "message": "파싱중 오류"})
 		return
 	}
 
 	rand.Seed(time.Now().UnixNano())
 	authNum := strconv.Itoa(rand.Intn(999999))
 
-	if err := models.SendMail(authNum, email.EMAIL); err != nil {
-		g.JSON(400, gin.H{"status": "400", "message": "이메일 전송 실패"})
+	if err := modules.SendMail(authNum, email.EMAIL); err != nil {
+		c.JSON(400, gin.H{"status": "400", "message": "이메일 전송 실패"})
 		return
 	} else {
-		g.JSON(400, gin.H{"status": "200", "message": "이메일 전송 성공", "authNum": authNum})
+		c.JSON(400, gin.H{"status": "200", "message": "이메일 전송 성공", "authNum": authNum})
 	}
 	return
 }

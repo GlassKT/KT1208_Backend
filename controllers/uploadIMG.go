@@ -1,8 +1,6 @@
 package controllers
 
 import (
-	db "GlassKT/database"
-	"GlassKT/models"
 	"bytes"
 	"encoding/json"
 	"io"
@@ -11,24 +9,28 @@ import (
 	"os"
 	"strings"
 
+	db "example.com/m/database"
+	"example.com/m/models"
+	"example.com/m/modules"
+
 	"github.com/gin-gonic/gin"
 )
 
-func UploadIMG(g *gin.Context) {
-	User := &db.User{}
+func UploadIMG(c *gin.Context) {
+	User := &models.User{}
 
-	file, header, err := g.Request.FormFile("file")
+	file, header, err := c.Request.FormFile("file")
 	if err != nil {
-		g.JSON(400, gin.H{
+		c.JSON(400, gin.H{
 			"status":  "400",
 			"message": "멀티파트폼 받기 실패",
 		})
 		return
 	}
 
-	imgId := g.Request.PostForm.Get("id")
+	imgId := c.Request.PostForm.Get("id")
 	if imgId == "" {
-		g.JSON(400, gin.H{
+		c.JSON(400, gin.H{
 			"status":  "400",
 			"message": "id받기 실패",
 		})
@@ -36,7 +38,7 @@ func UploadIMG(g *gin.Context) {
 	}
 
 	if err = db.DB.Where("id = ?", imgId).Find(User).Error; err != nil {
-		g.JSON(400, gin.H{
+		c.JSON(400, gin.H{
 			"status":  "400",
 			"message": "존재하지 않는 id",
 		})
@@ -45,9 +47,9 @@ func UploadIMG(g *gin.Context) {
 
 	filename := header.Filename
 
-	ext, err := models.FilePath(filename) // 확장자 뽑아내기
+	ext, err := modules.FilePath(filename) // 확장자 뽑아내기
 	if err != nil {
-		g.JSON(400, gin.H{
+		c.JSON(400, gin.H{
 			"status":  "400",
 			"message": "파일 확장자를 못찾음",
 		})
@@ -58,7 +60,7 @@ func UploadIMG(g *gin.Context) {
 
 	out, err := os.Create("./img/" + imgIdOnly)
 	if err != nil {
-		g.JSON(400, gin.H{
+		c.JSON(400, gin.H{
 			"status":  "400",
 			"message": "이미지 파일만들기 실패",
 		})
@@ -67,7 +69,7 @@ func UploadIMG(g *gin.Context) {
 
 	_, err = io.Copy(out, file)
 	if err != nil {
-		g.JSON(400, gin.H{
+		c.JSON(400, gin.H{
 			"status":  "400",
 			"message": "이미지 업로드",
 		})
@@ -82,7 +84,7 @@ func UploadIMG(g *gin.Context) {
 
 	imgJson, err := json.Marshal(picture)
 	if err != nil {
-		g.JSON(400, gin.H{
+		c.JSON(400, gin.H{
 			"status":  400,
 			"messege": "map to json error",
 		})
@@ -93,7 +95,7 @@ func UploadIMG(g *gin.Context) {
 
 	resp, err := http.Post("http://10.80.161.150:5000/image", "application/json", buff) //***********
 	if err != nil {
-		g.JSON(400, gin.H{
+		c.JSON(400, gin.H{
 			"status":  400,
 			"messege": "얼굴인식 서버와 연결이 되지 않음",
 		})
@@ -102,7 +104,7 @@ func UploadIMG(g *gin.Context) {
 
 	respBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		g.JSON(400, gin.H{
+		c.JSON(400, gin.H{
 			"status":  400,
 			"messege": "얼굴인식 판단 결과를 가져오지 못함",
 		})
@@ -112,14 +114,14 @@ func UploadIMG(g *gin.Context) {
 	respResult := string(respBody)
 
 	if strings.Contains(respResult, "false") {
-		g.JSON(400, gin.H{
+		c.JSON(400, gin.H{
 			"status":  400,
 			"messege": "사람의 얼굴이 없습니다. 얼굴사진을 올려주세요",
 		})
 		return
 	}
 	if strings.Contains(respResult, "error") {
-		g.JSON(400, gin.H{
+		c.JSON(400, gin.H{
 			"status":  400,
 			"messege": "얼굴인식 서버에서 문제가 발생했습니다",
 		})
@@ -130,14 +132,14 @@ func UploadIMG(g *gin.Context) {
 	defer out.Close()
 
 	if err = db.DB.Model(&User).Where("id = ?", imgId).Update("imgname", imgIdOnly).Error; err != nil {
-		g.JSON(400, gin.H{
+		c.JSON(400, gin.H{
 			"status":  "400",
 			"message": "이미지 업로드 실패",
 		})
 		return
 	}
 
-	g.JSON(200, gin.H{
+	c.JSON(200, gin.H{
 		"status":  "200",
 		"message": "이미지 업로드 성공",
 	})

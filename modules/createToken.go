@@ -1,4 +1,4 @@
-package models
+package modules
 
 import (
 	"log"
@@ -14,7 +14,6 @@ func CreateToken(id string) (string, error) {
 	// claims = 토큰의 조건
 	claims := jwt.MapClaims{} // 조건을 맵형태로 저장
 
-	claims["authorized"] = true
 	claims["user_id"] = id
 	claims["exp"] = time.Now().Add(time.Minute * 1).Unix()
 

@@ -1,12 +1,13 @@
-package models
+package modules
 
 import (
-	"GlassKT/database"
+	"example.com/m/database"
+	"example.com/m/models"
 )
 
 func StoreImg(id, imageName string) error {
-	User := &database.User{}
-	imguser := database.User{ID: id, IMGNAME: imageName}
+	User := &models.User{}
+	imguser := models.User{ID: id, IMGNAME: imageName}
 	err := database.DB.Model(&User).Updates(imguser).Error
 	if err != nil {
 		return err
