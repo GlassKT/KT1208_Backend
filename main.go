@@ -1,32 +1,34 @@
 package main
 
 import (
-	"net/http"
-
-	"example.com/m/database"
-
-	"example.com/m/mysocket"
-	"example.com/m/webRoute"
+	"log"
+	"web_test/database"
+	"web_test/redis"
+	"web_test/webroute"
+	"web_test/websocket"
 
 	"github.com/gin-gonic/gin"
-	socketio "github.com/googollee/go-socket.io"
 )
 
 func main() {
 
+	var err error
+
 	database.Connect() // DB 연결 및 전역선언
+
+	redis.InitRedis() // redis 연결
+	defer redis.CloseRedis()
+
 	e := gin.Default() // gin 엔진 생성
 
-	webRoute.WRoute(e) // routing
+	server := websocket.Socket() // 소켓서버 열기
+	defer server.Close()         // 소켓서버 닫기
 
-	server := socketio.NewServer(nil) // socket 서버 생성
+	webroute.WebRoute(e, server) // gin 라우팅
 
-	mysocket.SRoute(server) // socket handling
+	if err = e.Run(); err != nil { // http 서버열기 :8080
+		log.Fatal("failed run server", err)
+	}
 
-	go server.Serve()    // socket server 열기
-	defer server.Close() // socket server 닫기
-
-	http.Handle("/socket.io/", server) // socket routing
-
-	e.Run() // http 서버열기 :8080
+	log.Println("서버 열기 성공")
 }

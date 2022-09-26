@@ -1,9 +1,13 @@
 package middleware
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+)
 
 func CORSMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
+
+		//c.Header("Access-Control-Allow-Headers", "Content-Type, Authorization, Origin")
 		c.Header("Access-Control-Allow-Headers", "Content-Type, Authorization, Origin")
 		c.Header("Access-Control-Allow-Credentials", "true")
 		c.Header("Access-Control-Allow-Origin", "*")
@@ -13,6 +17,8 @@ func CORSMiddleware() gin.HandlerFunc {
 			c.AbortWithStatus(204)
 			return
 		}
+
+		c.Request.Header.Del("Origin") // ********* 소켓서버 미들웨어에 달려잇던거
 
 		c.Next()
 	}

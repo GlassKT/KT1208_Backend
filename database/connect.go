@@ -7,8 +7,6 @@ import (
 	"database/sql"
 	"log"
 
-	"example.com/m/models"
-
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -19,7 +17,7 @@ var DB *gorm.DB
 func Connect() {
 
 	// db정보와 db_dns
-	sqlDB, err := sql.Open("mysql", "glassKT:1234@tcp(13.125.236.0:3306)/glasskt?parseTime=true")
+	sqlDB, err := sql.Open("mysql", "glassKT:1234@tcp(13.125.236.0:3306)/glasskt?parseTime=true") // mysql aws server
 	if err != nil {
 		panic(err)
 	}
@@ -35,9 +33,9 @@ func Connect() {
 		panic(err)
 	}
 
-	db.AutoMigrate(&models.User{}, &models.Makefriend{}, &models.Hobby{})
+	//db.AutoMigrate(&models.ChattingRoom{}, &models.Message{})
 
-	// 연결된 db를 리
+	// 연결된 db를 리턴
 	DB = db
-	log.Printf("[DB 연결 성공]")
+	log.Println("[DB 연결 성공]")
 }

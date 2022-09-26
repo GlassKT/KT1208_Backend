@@ -1,22 +1,18 @@
 package helper
 
 import (
-	"fmt"
-
 	"golang.org/x/crypto/bcrypt"
 )
 
-func HashPassword(pw string) string {
+func HashPassword(pw string) (string, error) {
 
-	bytes, _ := bcrypt.GenerateFromPassword([]byte(pw), bcrypt.DefaultCost)
-	return string(bytes)
+	bytes, err := bcrypt.GenerateFromPassword([]byte(pw), bcrypt.DefaultCost)
+	return string(bytes), err
 }
 
-func CheckPasswordHash(hashVal, userPw string) bool {
+func CheckPasswordHash(hashVal, userPw string) bool { // hash값과 일반 string을 받아 비교
 
 	err := bcrypt.CompareHashAndPassword([]byte(hashVal), []byte(userPw))
-
-	fmt.Println(err)
 
 	if err != nil {
 		return false
