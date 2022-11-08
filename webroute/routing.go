@@ -2,15 +2,13 @@ package webroute
 
 import (
 	"log"
-	"net/http"
 	"web_test/controller"
 	"web_test/middleware"
 
 	"github.com/gin-gonic/gin"
-	socketio "github.com/googollee/go-socket.io"
 )
 
-func WebRoute(e *gin.Engine, server *socketio.Server) {
+func WebRoute(e *gin.Engine /*, server *socketio.Server*/) {
 
 	/*e.Static("/img", "./img")
 
@@ -42,7 +40,7 @@ func WebRoute(e *gin.Engine, server *socketio.Server) {
 
 	log.Println("라우팅 성공")*/
 
-	e.Static("/img", "./img")
+	e.Static("/image", "./image")
 
 	e.Use(middleware.CORSMiddleware())
 
@@ -59,9 +57,14 @@ func WebRoute(e *gin.Engine, server *socketio.Server) {
 	e.POST("/addhobby", controller.AddHobby)                   // 취미 추가
 	e.POST("/addblockfriend", controller.AddBlockFriend)       // 친구 차단
 	e.POST("/addchatroom", controller.AddChattingRoom)         // 채팅룸 만들기
+	e.POST("/addchatmember", controller.AddChattingMember)     // 채팅룸 멤버 추가
+	e.POST("/leavechatroom", controller.LeaveChatRoom)         // 채팅룸 나가기
 
-	e.POST("/", middleware.TokenAuthMiddleware()) // 로그인 확인
+	e.POST("/token", middleware.TokenAuthMiddleware()) // 로그인 확인
 
+	e.GET("/chattinghisyory", controller.GetChattingHistory)            // 채팅방 채팅 내역
+	e.GET("/getmychatting", controller.GetMyChatting)                   // 내 채팅 내역 보여주기(왼쪽 바)
+	e.GET("/search", controller.Search)                                 // 이름, 취미로 유저를 검색
 	e.GET("/emailauth", controller.EmailAuth)                           // 이메일 인증
 	e.GET("/getwaitfriend", controller.GetWaitFriend)                   // 친구 대기 리스트
 	e.GET("/getfriend", controller.GetFriend)                           // 친구 요청 리스트
@@ -71,16 +74,14 @@ func WebRoute(e *gin.Engine, server *socketio.Server) {
 	e.GET("/recommandfriendfriends", controller.RecommandFriendFriends) // 친구의 친구 추천
 
 	// ------------  socket  ------------
-	go func() {
+	/*go func() {
 		if err := server.Serve(); err != nil {
 			log.Fatalf("socketio listen error : %s\n", err)
 		}
 	}()
 
 	e.GET("/socket.io/*any", gin.WrapH(server))
-	e.POST("/socket.io/*any", gin.WrapH(server))
-	e.StaticFS("/chat", http.Dir("./asset"))
+	e.POST("/socket.io/*any", gin.WrapH(server))*/
 
-	log.Println("라우팅 성공")
-
+	log.Println("[라우팅 성공]")
 }

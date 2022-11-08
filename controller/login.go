@@ -44,5 +44,5 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	response.ResponseToken(c, tk.AccessToken, loginInfo.Id)
+	response.ResponseToken(c, tk.AccessToken, loginInfo.Id, loginInfo.Name)
 }

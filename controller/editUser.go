@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"log"
 	"web_test/database"
 	"web_test/models"
 	"web_test/response"
@@ -18,7 +19,15 @@ func EditUser(c *gin.Context) {
 		return
 	}
 
-	if err := database.DB.Where("id = ?", editInfo.Id).Find(&models.User{}).Error; err != nil { // id 존재여부 확인
+	log.Println(editInfo)
+
+	/*if err := database.DB.Where("id = ?", editInfo.Id).Find(&models.User{}).Error; err != nil { // id 존재여부 확인
+		response.ResponseBadRequest(c, "edit id is not found")
+		return
+	}*/
+
+	temp_db := database.DB.Where("id = ?", editInfo.Id).Find(&models.User{})
+	if temp_db.RowsAffected < 1 {
 		response.ResponseBadRequest(c, "edit id is not found")
 		return
 	}

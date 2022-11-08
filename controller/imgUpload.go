@@ -2,6 +2,7 @@ package controller
 
 import (
 	"io"
+	"log"
 	"os"
 	"web_test/database"
 	"web_test/models"
@@ -36,15 +37,16 @@ func ImgUpload(c *gin.Context) {
 	img_id := modules.FileName(fileName) // 이미지 파일에서 이름 뽑아오기
 
 	if err = database.DB.Model(&models.User{}).Where("id = ?", img_id).Update("img_name", fileName).Error; err != nil { // db에 넣기
+		log.Println(err)
 		response.ResponseBadRequest(c, "img upload update error")
 		return
 	}
 
-	/*aiRes := modules.ImgAIapi(fileName) // 사람 얼굴인지 파악하는 api
+	aiRes := modules.ImgAIapi(fileName) // 사람 얼굴인지 파악하는 api
 	if !aiRes {
 		response.ResponseBadRequest(c, "사람의 얼굴이 아닙니다")
 		return
-	}*/
+	}
 
 	response.ResponseStatusAccept(c, "img upload success")
 }

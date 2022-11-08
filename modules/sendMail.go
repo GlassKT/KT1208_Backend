@@ -12,7 +12,7 @@ func SendMail(authNum, toEmail string) error {
 	m.SetHeader("From", "sh-ym3384@naver.com")
 	m.SetHeader("To", toEmail, "sh-ym3384@naver.com")
 	m.SetAddressHeader("Cc", "sh-ym3384@naver.com", "name")
-	m.SetHeader("Subject", "email test")
+	m.SetHeader("Subject", "GlassKt Auth Mail")
 	m.SetBody("text/html", authNum)
 
 	d := gomail.NewDialer("smtp.naver.com", 465, "sh-ym3384@naver.com", "TAKIYOU^^123")

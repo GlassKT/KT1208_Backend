@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"web_test/database"
 	"web_test/models"
 	"web_test/modules"
@@ -25,13 +24,9 @@ func RecommandFriendFriends(c *gin.Context) {
 
 	friends := []string{}
 
-	fmt.Println(user)
-
 	for _, v := range user {
 		friends = append(friends, v.Friend)
 	}
-
-	fmt.Println(friends)
 
 	hobbies := modules.GetHobbyStringSlice(friends)
 
@@ -58,9 +53,6 @@ func RecommandFriend(c *gin.Context) {
 	for _, v := range user {
 		friends = append(friends, v.Id)
 	}
-
-	fmt.Println(user)
-	fmt.Println(friends)
 
 	hobbies := modules.GetHobbyStringSlice(friends)
 

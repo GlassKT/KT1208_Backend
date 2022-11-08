@@ -33,8 +33,6 @@ func Connect() {
 		panic(err)
 	}
 
-	//db.AutoMigrate(&models.ChattingRoom{}, &models.Message{})
-
 	// 연결된 db를 리턴
 	DB = db
 	log.Println("[DB 연결 성공]")

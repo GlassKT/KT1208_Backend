@@ -18,8 +18,8 @@ func DeleteChattingRoom(c *gin.Context) {
 		return
 	}
 
-	if chatRoom.Guest == "" || chatRoom.Owner == "" {
-		response.ResponseBadRequest(c, "게스트나 오너가 비어있음")
+	if chatRoom.RoomNum == "" {
+		response.ResponseBadRequest(c, "방 번호가 비어있음")
 		return
 	}
 
