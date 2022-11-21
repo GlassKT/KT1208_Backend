@@ -31,12 +31,13 @@ func ResponseStatusAccept(c *gin.Context, msg string) { // 대부분의 성공�
 	})
 }
 
-func ResponseToken(c *gin.Context, tk, id, name string) { // 로그인 토큰
+func ResponseToken(c *gin.Context, tk, id, name, image string) { // 로그인 토큰
 	c.JSON(http.StatusAccepted, gin.H{
 		"status":      http.StatusAccepted,
 		"accessToken": tk,
 		"id":          id,
 		"name":        name,
+		"image":       image,
 	})
 }
 

@@ -8,9 +8,10 @@ type SignupInfo struct {
 }
 
 type LoginInfo struct {
-	Id   string `json:"id"`
-	Pw   string `json:"pw"`
-	Name string `json:"name"`
+	Id      string `json:"id"`
+	Pw      string `json:"pw"`
+	Name    string `json:"name"`
+	ImgName string `json:"image"`
 }
 
 type EditInfo struct {

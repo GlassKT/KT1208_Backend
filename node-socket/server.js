@@ -27,27 +27,30 @@ const io = SocketIo(server, {path: '/socket.io'});
 io.on('connection', function(socket) {
 
     socket.on('joinroom', (data) => {
-        console.log(data)
         
         socket.join(data.roomnum);
+        console.log("join room 작동")
+
         io.to(data.roomnum).emit("msg", data.name + " is join " + data.roomnum)
     });
 
     socket.on('leaveroom', (data) => {
         console.log(data)
 
+        console.log("leave room 작동")
         socket.leave(data.roomnum);
         io.to(data.roomnum).emit("msg", data.name + " is leave " + data.roomnum)
     });
 
 
     socket.on('msg', (data) => {        // data { roomnum, content, id, name, createat }
-        console.log(data);
+
+        console.log("message is ",data);  
 
         conn.query(sql,[data.num_room, data.content, data.user_id, data.createat, data.name], function(err, rows, fields){
             console.log(err);
         });
 
-        socket.emit('msg', data)
+        io.emit('msg', data)
     });
 });

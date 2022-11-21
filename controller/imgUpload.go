@@ -1,10 +1,13 @@
 package controller
 
 import (
+	"fmt"
 	"io"
 	"log"
 	"os"
+	"strings"
 	"web_test/database"
+	"web_test/helper"
 	"web_test/models"
 	"web_test/modules"
 	"web_test/response"
@@ -20,7 +23,13 @@ func ImgUpload(c *gin.Context) {
 		return
 	}
 
-	fileName := header.Filename
+	userId, _ := helper.ExtractTokenMetadata(c)
+
+	filename := strings.Split(header.Filename, "")
+
+	fileName := userId.UserId + modules.GetExtension(filename)
+
+	fmt.Println(fileName)
 
 	file, err := os.Create("./image/" + fileName) // 파일 생성
 	if err != nil {

@@ -41,7 +41,7 @@ func GetMyChatting(c *gin.Context) {
 	roomNumbers := []getRoomnum{}
 	lastChattings := []resMyLastChatting{}
 
-	err := database.DB.Model(&models.ChattingRoom{}).Where("user_id", userId).Find(&roomNumbers).Error
+	err := database.DB.Model(&models.ChattingRoom{}).Where("user", userId).Find(&roomNumbers).Error
 	if err != nil {
 		log.Println(err)
 		response.ResponseBadRequest(c, "get my chatting first find error")
@@ -53,14 +53,14 @@ func GetMyChatting(c *gin.Context) {
 		msgUser := &messageUser{}
 		userUser := &user{}
 
-		err = database.DB.Model(&models.Message{}).Where("num_room", v.RoomNum).Order("create_at DESC").Find(msgUser).Error
+		err = database.DB.Model(&models.Message{}).Where("num_room", v.RoomNum).Order("createat DESC").Find(msgUser).Error
 		if err != nil {
 			log.Println(err)
 			response.ResponseBadRequest(c, "get my chatting second find error")
 			return
 		}
 
-		err = database.DB.Model(&models.User{}).Where("user_id = ?", msgUser.UserId).Find(userUser).Error
+		err = database.DB.Model(&models.User{}).Where("id = ?", msgUser.UserId).Find(userUser).Error
 		if err != nil {
 			log.Println(err)
 			response.ResponseBadRequest(c, "get my chatting second find error")
