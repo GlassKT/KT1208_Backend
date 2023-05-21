@@ -1,7 +1,5 @@
 package controller
 
-// emailAuth로 할 경우 대소문자 구분의 어색한 golang씨발 때문에 오류남 gopls build tag 인가 뭔가 해서 바꿔야댐
-
 import (
 	"fmt"
 	"math/rand"
