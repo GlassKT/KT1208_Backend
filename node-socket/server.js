@@ -5,11 +5,6 @@ app.use(cors());
 
 var mysql = require('mysql2')
 var conn = mysql.createConnection({ // createConnection 메서드로 객체화
-    port : '3306',
-    host : '13.125.236.0',  
-    user : 'glassKT',
-    password : '1234',
-    database : 'glasskt'
 });
   
 conn.connect();
